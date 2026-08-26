@@ -26,9 +26,44 @@ server stops. The project is currently focused on sending files.
 
 ## Build
 
+Linux and macOS:
+
 ```sh
 go build ./cmd/drop
 ```
+
+Windows (PowerShell):
+
+```powershell
+go build -o drop.exe ./cmd/drop
+.\drop.exe file.zip
+```
+
+To cross-compile a Windows binary from Linux or macOS:
+
+```sh
+GOOS=windows GOARCH=amd64 go build -o drop.exe ./cmd/drop
+```
+
+The CLI uses the same flags and behavior on Windows, Linux, and macOS. Windows
+Firewall may ask for permission the first time `drop.exe` listens on the local
+network; allow access on private networks for LAN sharing.
+
+## Install on Windows
+
+From PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/nihitdev/drop/main/install.ps1 | iex
+```
+
+The installer downloads the latest executable for AMD64 or ARM64 Windows,
+verifies its SHA-256 checksum, installs it under the current user's local app
+directory, and adds that directory to the user PATH. Open a new terminal after
+installation, then run `drop <file>`.
+
+Version tags matching `v*` trigger the release workflow, which tests the project
+and publishes both Windows executables and their checksums to GitHub Releases.
 
 ## Roadmap
 
