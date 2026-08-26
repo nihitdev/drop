@@ -28,9 +28,12 @@ func TestPrepareDirectory(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer zr.Close()
 	if len(zr.File) != 1 || zr.File[0].Name != "nested/hello.txt" {
+		_ = zr.Close()
 		t.Fatalf("unexpected ZIP entries: %+v", zr.File)
+	}
+	if err := zr.Close(); err != nil {
+		t.Fatalf("close ZIP archive: %v", err)
 	}
 	target.Cleanup()
 	if _, err := os.Stat(archivePath); !os.IsNotExist(err) {
